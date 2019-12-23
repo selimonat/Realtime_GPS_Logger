@@ -1,0 +1,5 @@
+paho-mqtt==1.5
+#this is manually installed
+#mysqlclient==1.4.6
+geo_utils==0.1
+haversine==2.1.2
