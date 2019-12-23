@@ -5,6 +5,7 @@ WORKDIR /opt/mqtt
 COPY requirements.txt /opt/mqtt/requirements.txt
 COPY mqtt_python.py /opt/mqtt/mqtt_python.py
 COPY geo_utils.py /opt/mqtt/geo_utils.py
+COPY credentials.json /opt/mqtt/credentials.json
 
 RUN apt-get update
 RUN apt-get -y install python3-dev 
