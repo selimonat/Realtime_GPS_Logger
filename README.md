@@ -11,7 +11,7 @@ For installation of MQTT broker, the great source of information is here `https:
 `python mqtt_python.py` should return
 
 ```
-pi@homebrain  ~/code/python/mqtt   master ●  python mqtt_python.py        
+pi@homebrain ~/code/python/mqtt: python mqtt_python.py        
 
 Connected with result code 0
 [(49.282318115234375, 8.399269868366922, 'se', 1577143402, 65, False, 489.1970030175267)]
