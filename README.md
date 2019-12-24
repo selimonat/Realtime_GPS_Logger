@@ -5,6 +5,8 @@ This repo allows you to log the GPS coordinates of your mobile phone running the
 
 MQTT server and mySQL database set up and running.
 
+For installation of MQTT broker, the great source of information is here `https://owntracks.org/booklet/guide/broker/`.
+
 # Check installation
 `python mqtt_python.py` should return
 
