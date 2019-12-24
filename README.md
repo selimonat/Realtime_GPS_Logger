@@ -2,7 +2,7 @@
 
 This repo allows you to log the GPS coordinates of your mobile phone running the app Owntracks to a database running on a remotely accessible Raspberry Pi using a MQTT server. 
 
-<img src="https://github.com/selimonat/Realtime_GPS_Logger/img/cover.jpg" height="300">
+<img src="https://github.com/selimonat/Realtime_GPS_Logger/blob/master/img/cover.jpg" width="480">
 
 # Requirements
 
