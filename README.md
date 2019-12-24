@@ -7,6 +7,10 @@ MQTT server and mySQL database set up and running.
 
 For installation of MQTT broker, the great source of information is here `https://owntracks.org/booklet/guide/broker/`.
 
+You need to have both mysql client and server installed.
+
+Concerning the client side, the `Dockerfile` is taking care of the setting up of the Python client to the mysql database running on the host computer. 
+
 # Check installation
 `python mqtt_python.py` should return
 
