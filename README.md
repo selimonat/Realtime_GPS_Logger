@@ -52,3 +52,9 @@ WantedBy=default.target
 ```
 
 and run `sudo systemctl enable docker_mqtt2sql.service` to enable it a service.
+
+# Visualize current position using Grafana
+
+you can run the following Grafana container to visualize the data collected on the database:
+
+`sudo docker run -d -p 3000:3000 --name=grafana -e "GF_INSTALL_PLUGINS=grafana-worldmap-panel" --net=host -v grafana-storage:/var/lib/grafana grafana/grafana`
