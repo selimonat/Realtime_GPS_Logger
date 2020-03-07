@@ -1,5 +1,9 @@
 # Realtime_GPS_Logger
-This repo allows you to log the GPS coordinates of your mobile phone running the app Owntracks to a database running on a remotely accessible Raspberry Pi using a MQTT server. 
+
+You can use the repo in this hobby project to log GPS coordinates of a mobile phone running Owntracks to a database running on a remotely accessible Raspberry Pi using a MQTT server.
+
+Realtime_GPS_Logger + Grafana makes it possible to monitor your real-time location.
+<img src="https://github.com/selimonat/Realtime_GPS_Logger/blob/master/img/cover.jpg" width="480">
 
 # Requirements
 
@@ -7,9 +11,13 @@ MQTT server and mySQL database set up and running.
 
 For installation of MQTT broker, the great source of information is here `https://owntracks.org/booklet/guide/broker/`.
 
-You need to have both mysql client and server installed.
+You need to have both `mysql server` and the `client` installed (python connector to server).
 
-Concerning the client side, the `Dockerfile` is taking care of the setting up of the Python client to the mysql database running on the host computer. 
+The `Dockerfile` is taking care of setting up of the Python client to the mysql database running on the Raspberry Pi.
+
+# Setup Owntracks
+
+You need to setup the Owntracks app to connect to your Raspberry Pi. My RPI is connected to outside world with a dyndns service and my router forwards a specific port to my RPI.
 
 # Database setup
 
@@ -39,7 +47,7 @@ sudo docker build -t mqtt2sql . #create an image called mqtt2sql
 sudo docker run -d --name=docker_mqtt2sql --network="host" e51acd19dc5d #run it as a container
 ```
 
-# Start the docker container at system start up as daemon
+# Start the docker container at system start up as a daemon
 
 based on:
 https://stackoverflow.com/questions/30449313/how-do-i-make-a-docker-container-start-automatically-on-system-boot/39493500#39493500
@@ -65,6 +73,6 @@ and run `sudo systemctl enable docker_mqtt2sql.service` to enable it a service.
 
 # Visualize current position using Grafana
 
-you can run the following Grafana container to visualize the data collected on the database:
+You can setup the following Grafana container to visualize the data collected on the database:
 
 `sudo docker run -d -p 3000:3000 --name=grafana -e "GF_INSTALL_PLUGINS=grafana-worldmap-panel" --net=host -v grafana-storage:/var/lib/grafana grafana/grafana`
