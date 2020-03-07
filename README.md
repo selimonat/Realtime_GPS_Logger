@@ -11,8 +11,18 @@ You need to have both mysql client and server installed.
 
 Concerning the client side, the `Dockerfile` is taking care of the setting up of the Python client to the mysql database running on the host computer. 
 
+# Database setup
+
+The following SQL command takes care of creating the table schema.
+
+`CREATE TABLE log_owntracks_test2 (time BIGINT UNSIGNED, tid VARCHAR(2), lat DECIMAL(10, 8) NOT NULL, lon DECIMAL(11, 8) NOT NULL, accuracy SMALLINT UNSIGNED, at_home BOOLEAN, distance_home DOUBLE, PRIMARY KEY (time, tid));`
+
+This has been tested using MariaDb
+
+
 # Check installation
 `python mqtt_python.py` should return
+
 
 ```
 pi@homebrain ~/code/python/mqtt: python mqtt_python.py        
