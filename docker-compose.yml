@@ -45,5 +45,5 @@ services:
       - GF_INSTALL_PLUGINS=grafana-worldmap-panel
       - GF_PLUGIN_DIR=/pluginfolder
     volumes:
-      - .grafana:/var/lib/grafana
-      - .grafana/pluginfolder:/var/lib/pluginfolder
+      - ./grafana:/var/lib/grafana
+      - ./grafana/pluginfolder:/var/lib/pluginfolder
