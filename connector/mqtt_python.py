@@ -4,6 +4,7 @@ import paho.mqtt.client as mqtt
 import MySQLdb
 import json
 import utils
+from time import sleep
 
 logger = utils.get_logger("Connector")
 # read the credential json with user_mqtt, user_mysql, pw_mqtt and pw_mysql
@@ -13,11 +14,8 @@ s = file.read()
 d = json.loads(s)
 
 # assign credential variables.
-USERNAME_MQTT = d["user_mqtt"]
 USERNAME_MYSQL = d["user_mysql"]
-PW_MQTT = d["pw_mqtt"]
 PW_MYSQL = d["pw_mysql"]
-
 # the name of the table that we will write data
 TABLE_NAME = "db"
 MQTT_HOSTNAME = "mosquitto"
@@ -44,15 +42,7 @@ def on_message(client, userdata, msg):
         a subset is used and enriched with two new fields. (1) a binary telling whether we are at home or not,
         and (2) Euclidean distance to home. The resulting list is then inserted to the mysql table.
     """
-    logger.info(f"Received a message.")
-    keys = ['lat', 'lon', 'tid', 'tst', 'acc']
-    my_json = msg.payload.decode('utf8').replace("'", '"')
-    # print(my_json)
-    data = json.loads(my_json)
-    data = tuple(data[your_key] for your_key in keys)
-    # print(data)
-    data = [(*data, utils.is_at_home(data[0], data[1]), utils.latlon_to_distance((data[0], data[1])))]
-    logger.info(f"Payload is {data}")
+    data = process_payload(msg)
     logger.info('Connecting to mysql server.')
     db = MySQLdb.connect(MYSQL_HOSTNAME, USERNAME_MYSQL, PW_MYSQL, TABLE_NAME)
     curs = db.cursor()
@@ -63,22 +53,49 @@ def on_message(client, userdata, msg):
     db.commit()
 
 
-logger.info("Connecting to broker.")
+def process_payload(msg):
+    """
+    Process the payload received by the broker.
+    :param msg:
+    :return:
+    """
+    keys = ['lat', 'lon', 'tid', 'tst', 'acc']
+    my_json = msg.payload.decode('utf8').replace("'", '"')
+    logger.info(f"Processing the payload {my_json}")
+
+    data = json.loads(my_json)
+    data = tuple(data[your_key] for your_key in keys)
+
+    data = [(*data,
+             utils.is_at_home(data[0], data[1]),
+             utils.distance_to_home((data[0], data[1])),
+             )]
+    logger.info(f"Processed payload: {data}")
+    return data
+
+
+logger.info("Connecting to MQTT broker.")
 client = mqtt.Client("connector")
 client.on_connect = on_connect
 client.on_message = on_message
-client.username_pw_set(USERNAME_MQTT, PW_MQTT)
+client.username_pw_set("connector")
 
-try:
-    client.connect(MQTT_HOSTNAME, 1883, 60)
-    # Blocking call that processes network traffic, dispatches callbacks and
-    # handles reconnecting.
-    # Other loop*() functions are available that give a threaded interface and a
-    # manual interface.
-    client.publish("topic/test", "Hello world!")
-    client.loop_forever()
-    client.loop_stop()
+counter = 0
+while True:
+    try:
+        client.connect(MQTT_HOSTNAME, 1883, 60)
+        # Blocking call that processes network traffic, dispatches callbacks and
+        # handles reconnecting.
+        # Other loop*() functions are available that give a threaded interface and a
+        # manual interface.
+        client.publish("topic/test", "Hello world!")
+        client.loop_forever()
+        client.loop_stop()
 
-except:
-    logger.info("Cannot connect")
-    raise ConnectionError
+    except:
+        counter += 1
+        logger.info(f"Cannot connect to db, tried {counter} times, will try 10 more times.")
+        sleep(5)
+        if counter == 10:
+            logger.info("Cannot manage to connect to db after 10 trials.")
+            raise ConnectionError
