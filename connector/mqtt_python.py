@@ -2,18 +2,17 @@
 
 import paho.mqtt.client as mqtt
 import MySQLdb
-import subprocess
 import json
 import utils
 
-logger = utils.get_logger(__name__)
+logger = utils.get_logger("Connector")
 # read the credential json with user_mqtt, user_mysql, pw_mqtt and pw_mysql
 # fields.
 file = open('credentials.json')
 s = file.read()
 d = json.loads(s)
 
-# assign crediential variables.
+# assign credential variables.
 USERNAME_MQTT = d["user_mqtt"]
 USERNAME_MYSQL = d["user_mysql"]
 PW_MQTT = d["pw_mqtt"]
@@ -26,30 +25,24 @@ MYSQL_HOSTNAME = "db"
 
 
 def on_connect(client, userdata, flags, rc):
-    '''
-    # The callback for when the client receives a CONNACK response from the server.
+    """
+    The callback to be executed when the client receives a CONNACK response from the broker, that is on connect.
     :param client:
     :param userdata:
     :param flags:
     :param rc:
     :return:
-    '''
-    # Code to be executed on connect
+    """
     logger.info(f"Connected with result code {rc}.")
-
-    # Subscribing in on_connect() means that if we lose the connection and
-    # reconnect then subscriptions will be renewed.
+    # Subscribing in on_connect() means that if we lose the connection and reconnect then subscriptions will be renewed.
     client.subscribe("owntracks/+/+")
 
 
-# The callback for when a PUBLISH message is received from the server.
 def on_message(client, userdata, msg):
     """
-        Each time MQTT server receives a message this is executed.
-        The original json contains many fields we extract only the KEYS
-        from it. We add two new contentn, namely whether a binary telling
-        whether we are at home or not, and Euclidean distance to home.
-        The resulting list is then inserted to the devices.log_owntracks_test2
+        Each time MQTT server receives a message this is executed. The received JSON payload contains many fields, only
+        a subset is used and enriched with two new fields. (1) a binary telling whether we are at home or not,
+        and (2) Euclidean distance to home. The resulting list is then inserted to the mysql table.
     """
     logger.info(f"Received a message.")
     keys = ['lat', 'lon', 'tid', 'tst', 'acc']
@@ -69,8 +62,9 @@ def on_message(client, userdata, msg):
     curs.executemany(query, data)
     db.commit()
 
-logger.info("balbla")
-client = mqtt.Client("lalalala")
+
+logger.info("Connecting to broker.")
+client = mqtt.Client("connector")
 client.on_connect = on_connect
 client.on_message = on_message
 client.username_pw_set(USERNAME_MQTT, PW_MQTT)
@@ -88,5 +82,3 @@ try:
 except:
     logger.info("Cannot connect")
     raise ConnectionError
-
-
