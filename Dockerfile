@@ -1,16 +1,13 @@
-FROM python:3.5
+FROM python:3.7.6
+
+RUN apt-get update
+RUN apt-get -y install python3-dev
+RUN apt-get -y install default-libmysqlclient-dev
+RUN apt-get -y install build-essential
 
 WORKDIR /opt/mqtt
 
-COPY requirements.txt /opt/mqtt/requirements.txt
-COPY mqtt_python.py /opt/mqtt/mqtt_python.py
-COPY geo_utils.py /opt/mqtt/geo_utils.py
-COPY credentials.json /opt/mqtt/credentials.json
-
-RUN apt-get update
-RUN apt-get -y install python3-dev 
-RUN apt-get -y install default-libmysqlclient-dev
-RUN apt-get -y install build-essential
+COPY ./connector ./
 
 RUN pip install -U pip
 RUN pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple
