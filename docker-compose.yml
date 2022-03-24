@@ -28,3 +28,4 @@ services:
       MYSQL_ROOT_PASSWORD: password
     volumes:
       - ./mysql/config:/etc/mysql/conf.d/
+      - ./mysql/db:/var/lib/mysql
