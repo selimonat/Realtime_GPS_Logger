@@ -28,3 +28,9 @@ Owntrack. Each time you trigger a new message from it, you should be able to see
 the MQTT and connector containers. 
 
 ![image info](./img/diagram/event_processing.png)
+
+
+# Current Issues:
+
+Database container is not able to run the init script so currently the tables must be ran manually from inside the container using mysql shell.
+
