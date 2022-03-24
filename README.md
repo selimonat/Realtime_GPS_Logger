@@ -18,13 +18,19 @@ installed by Poetry during environment setup.
 
 - The container running the MQTT broker (running on own Raspberry Pi 3 behind the house router) needs to be accessed 
   from outside using the phone's internet connection. I am using a free dynamic-dns service for domain resolution and 
-  traffic redirection to the Raspberry.
+  traffic redirection to the Raspberry. This is not required for testing within the same local network.
   
-- Python 3.7
+- A .json file located at `connector/credentials.json` with the following keys value pairs. `home_lat` and 
+  `home_lon` fields are used to register device geographic location as `at home` or not. 
+
+      `{"user_mysql":"user","pw_mysql":"password",
+      "home_lat": 0.0, "home_lon": 0.0
+      }`
 
 # How to run ?
 
-To install the Python environment you need to run `make setup.env`. This will install `docker-compose`.
+To install the Python environment you need to run `make setup.env`. In order to use `docker-compose` activate the 
+`venv` environment with `. .venv/bin/activate`. 
 
 `docker-compose up` should spin of 3 different containers after building them: 
 - MQTT Broker, 
