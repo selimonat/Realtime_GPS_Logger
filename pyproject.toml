@@ -6,10 +6,8 @@ authors = ["Selim Onat"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-paho-mqtt = "1.5"
-mysqlclient = "1.4.6"
-haversine = "^2.5.1"
 diagrams = "^0.21.1"
+docker-compose = "1.29.2"
 
 [tool.poetry.dev-dependencies]
 
