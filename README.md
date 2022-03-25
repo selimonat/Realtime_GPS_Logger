@@ -10,6 +10,9 @@ Log the geographic position of your(self) mobile phone in real-time for visualiz
 
 # Requirements
 
+- Raspberry Pi. I tested the code using an RPI3. Because RPI3 uses an `armv7l` architecture, the database container 
+  will not run on other machines. However, you may simply use another respository for `mysql` image.
+
 - [Owntracks](https://owntracks.org/) is an app for iOS that regularly sends geographic coordinates as events to an 
   MQTT broker.
 
