@@ -7,7 +7,7 @@ services:
     container_name: connector
 
   mosquitto:
-    image: eclipse-mosquitto
+    image: mbixtech/arm32v7-mosquitto:latest
     container_name: mosquitto
     ports:
       - '1883:1883'
