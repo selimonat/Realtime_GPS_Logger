@@ -27,7 +27,7 @@ services:
       MYSQL_PASSWORD: password
       MYSQL_ROOT_PASSWORD: password
     volumes:
-      - ./mysql/config:/etc/mysql/conf.d/
+      - ./mysql/config:/docker-entrypoint-initdb.d
       - ./mysql/db:/var/lib/mysql
 
   grafana:

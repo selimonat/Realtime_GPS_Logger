@@ -43,8 +43,3 @@ To install the Python environment you need to run `make setup.env`. In order to 
 To test it locally, enter the IP address of your host to Owntrack. Each time you trigger a new message from it, you 
 should be able to see the corresponding information on the logs of the MQTT and connector containers. 
 
-# Current Issues:
-
-Database container is not able to run the init script, so currently the tables must be ran manually from inside the 
-container using a mysql shell. 
-
