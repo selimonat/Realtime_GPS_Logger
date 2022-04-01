@@ -26,7 +26,7 @@ installed by Poetry during environment setup.
 - A .json file located at `connector/credentials.json` with the following keys value pairs. `home_lat` and 
   `home_lon` fields are used to register device geographic location as `at home` or not. 
 
-      `{"user_mysql":"user","pw_mysql":"password",
+      `{"user_mysql":"root","pw_mysql":"password",
       "home_lat": 0.0, "home_lon": 0.0
       }`
 
