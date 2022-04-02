@@ -2,12 +2,13 @@
 
 import paho.mqtt.client as mqtt
 import MySQLdb
+import json
 from dotenv import load_dotenv
 import utils
 from time import sleep
 import os
 
-load_dotenv('../') # load .env file
+load_dotenv() # load .env file
 logger = utils.get_logger("Connector")
 # read the credential json with user_mqtt, user_mysql, pw_mqtt and pw_mysql
 # fields.

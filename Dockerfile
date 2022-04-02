@@ -8,6 +8,7 @@ RUN apt-get -y install build-essential
 WORKDIR /opt/mqtt
 
 COPY ./connector ./
+COPY ./.env ./
 
 RUN pip install -U pip
 RUN pip install -r requirements.txt --extra-index-url https://www.piwheels.org/simple
