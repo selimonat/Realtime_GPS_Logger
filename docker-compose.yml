@@ -1,4 +1,8 @@
 version: '3.3'
+secrets: # top level secrets block
+  db_password:
+    file: ./secrets/DB_PASSWORD
+
 services:
   connector:
     build:
@@ -23,10 +27,12 @@ services:
       - "3306:3306"
     environment:
       MYSQL_DATABASE: db
-      MYSQL_ROOT_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: /run/secrets/db_password
     volumes:
       - ./mysql/config:/docker-entrypoint-initdb.d
       - ./mysql/db:/var/lib/mysql
+    secrets:
+      - db_password
 
   grafana:
     image: grafana/grafana:5.2.4
