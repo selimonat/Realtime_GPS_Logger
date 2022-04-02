@@ -2,7 +2,7 @@
 
 import paho.mqtt.client as mqtt
 import MySQLdb
-import dotenv
+from dotenv import load_dotenv
 import utils
 from time import sleep
 import os
