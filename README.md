@@ -26,11 +26,13 @@ installed by Poetry during environment setup.
 - A .env file located at at the project folder. This will be used both by the mysql container to set up a password and 
 the connector to authenticate against it. The .env file must contain the following keys.
 
+```
 MYSQL_DATABASE=db
 MYSQL_ROOT_PASSWORD=
 username_mysql=root
 home_lat=0.0 # use your home lat/lon
-home_lon=0.0 
+home_lon=0.0
+``` 
 
 # How to run ?
 
