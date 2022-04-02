@@ -23,12 +23,14 @@ installed by Poetry during environment setup.
   from outside using the phone's internet connection. I am using a free dynamic-dns service for domain resolution and 
   traffic redirection to the Raspberry. This is not required for testing within the same local network.
   
-- A .json file located at `connector/credentials.json` with the following keys value pairs. `home_lat` and 
-  `home_lon` fields are used to register device geographic location as `at home` or not. 
+- A .env file located at at the project folder. This will be used both by the mysql container to set up a password and 
+the connector to authenticate against it. The .env file must contain the following keys.
 
-      `{"user_mysql":"root","pw_mysql":"password",
-      "home_lat": 0.0, "home_lon": 0.0
-      }`
+MYSQL_DATABASE=db
+MYSQL_ROOT_PASSWORD=
+username_mysql=root
+home_lat=0.0 # use your home lat/lon
+home_lon=0.0 
 
 # How to run ?
 

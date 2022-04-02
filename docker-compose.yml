@@ -1,7 +1,4 @@
 version: '3.3'
-secrets: # top level secrets block
-  db_password:
-    file: ./secrets/DB_PASSWORD
 
 services:
   connector:
@@ -26,21 +23,9 @@ services:
     ports:
       - "3306:3306"
     environment:
-      MYSQL_DATABASE: db
-      MYSQL_ROOT_PASSWORD: /run/secrets/db_password
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD} 
     volumes:
       - ./mysql/config:/docker-entrypoint-initdb.d
       - ./mysql/db:/var/lib/mysql
-    secrets:
-      - db_password
-
-  grafana:
-    image: grafana/grafana:5.2.4
-    ports:
-      - 3000:3000
-    environment:
-      - GF_INSTALL_PLUGINS=grafana-worldmap-panel
-      - GF_PLUGIN_DIR=/pluginfolder
-    volumes:
-      - ./grafana:/var/lib/grafana
 

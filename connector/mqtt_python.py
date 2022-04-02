@@ -2,22 +2,21 @@
 
 import paho.mqtt.client as mqtt
 import MySQLdb
-import json
+import dotenv
 import utils
 from time import sleep
+import os
 
+load_dotenv('../') # load .env file
 logger = utils.get_logger("Connector")
 # read the credential json with user_mqtt, user_mysql, pw_mqtt and pw_mysql
 # fields.
-file = open('credentials.json')
-s = file.read()
-d = json.loads(s)
 
 # assign credential variables.
-USERNAME_MYSQL = d["user_mysql"]
-PW_MYSQL = d["pw_mysql"]
+USERNAME_MYSQL= os.getenv("username_mysql") 
+PW_MYSQL =  os.getenv("MYSQL_ROOT_PASSWORD")
 # the name of the table that we will write data
-TABLE_NAME = "db"
+TABLE_NAME =  os.getenv("MYSQL_DATABASE")
 MQTT_HOSTNAME = "mosquitto"
 MYSQL_HOSTNAME = "db"
 
@@ -45,12 +44,15 @@ def on_message(client, userdata, msg):
     data = process_payload(msg)
     logger.info('Connecting to mysql server.')
     db = MySQLdb.connect(MYSQL_HOSTNAME, USERNAME_MYSQL, PW_MYSQL, TABLE_NAME)
+    logger.info(f"Server returned {db}")
     curs = db.cursor()
     logger.info(f'Inserting data to sql table {TABLE_NAME}')
     query = \
         """INSERT INTO gps_log(lat, lon, tid, time, accuracy, at_home, distance_home) values (%s,%s,%s,%s,%s,%s,%s)"""
     curs.executemany(query, data)
-    db.commit()
+    resp = db.commit()
+    logger.info(f"Server returned {resp}")
+    logger.info(f"Closing connection {db.close()}")
 
 
 def process_payload(msg):
